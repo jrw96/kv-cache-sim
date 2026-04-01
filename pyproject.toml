@@ -1,7 +1,7 @@
 [project]
 name = "kv-cache-sim"
 version = "0.1.0"
-description = "Add your description here"
+description = "Discrete-event simulator for LLM inference serving — PagedAttention memory management and continuous batching"
 readme = "README.md"
 authors = [
     { name = "John Wallace", email = "john.wallace08@gmail.com" }
@@ -32,7 +32,7 @@ ignore = ["COM812", "D"]
 known-first-party = ["kv_cache_sim",]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["INP001",]
+"tests/**" = ["INP001", "S101", "PLR2004",]
 
 [tool.pytest.ini_options]
 testpaths = ["tests",]
