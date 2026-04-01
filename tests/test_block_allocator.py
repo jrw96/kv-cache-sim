@@ -133,3 +133,34 @@ def test_can_allocate_without_side_effects(allocator: BlockAllocator) -> None:
     allocator.can_allocate(16)
     assert allocator.get_utilisation() == pytest.approx(0.0)
     assert len(allocator.block_tables) == 0
+
+
+# --- Paged vs Naive Comparison ---
+
+
+def test_paged_vs_preallocated_peak_utilisation() -> None:
+    """Paged allocation vs. pre-allocation for variable-length output."""
+    total_blocks = 100
+    block_size = 16
+    prompt_length = 16
+    max_output_length = 128
+
+    # Simulate 10 requests, each with prompt of size prompt_length
+    # Actual outputs vary from 20-60 tokens
+    actual_outputs = [20, 35, 45, 28, 60, 33, 50, 22, 40, 55]
+
+    # --- Naive: pre-allocate for worst case ---
+    naive = BlockAllocator(total_blocks=total_blocks, block_size=block_size)
+    for i in range(10):
+        naive.allocate(i, prompt_length + max_output_length)  # reserves max upfront
+    naive_utilisation = naive.get_utilisation()
+
+    # --- Paged: allocate prompt, then append actual tokens ---
+    paged = BlockAllocator(total_blocks=total_blocks, block_size=block_size)
+    for i in range(10):
+        paged.allocate(i, prompt_length)  # prompt only
+        for _ in range(actual_outputs[i]):
+            paged.append(i, 1)
+    paged_utilisation = paged.get_utilisation()
+
+    assert paged_utilisation < naive_utilisation
