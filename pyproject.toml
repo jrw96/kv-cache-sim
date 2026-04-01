@@ -25,7 +25,8 @@ dev = [
 ]
 
 [tool.ruff.lint]
-select = ["E","F","I","UP","ANN","B","SIM","RUF",]
+select = ["ALL",]
+ignore = ["COM812", "D"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["kv_cache_sim"]
