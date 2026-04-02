@@ -1,4 +1,25 @@
 from dataclasses import dataclass
+from enum import Enum, auto
+
+
+class RequestState(Enum):
+    WAITING = auto()
+    PREFILLING = auto()
+    RUNNING = auto()
+    COMPLETED = auto()
+
+
+@dataclass
+class Request:
+    request_id: int
+    arrival_time: float
+    prompt_length: int
+    max_output_length: int
+    generated_tokens: int
+    state: RequestState = RequestState.WAITING
+    prefill_start_time: float | None = None
+    first_token_time: float | None = None
+    completion_time: float | None = None
 
 
 @dataclass
