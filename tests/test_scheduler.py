@@ -198,14 +198,14 @@ def test_history_is_recorded_static(gpu: GPUConfig, model: ModelConfig) -> None:
 def test_preallocate_uses_more_memory(gpu: GPUConfig, model: ModelConfig) -> None:
     """Preallocation reserves more memory than paged for the same workload."""
     requests = generate_workload(20, 1000.0, (50, 100), (10, 50), seed=42)
-    requests_static = generate_workload(100, 100.0, (50, 100), (5, 200), seed=42)
+    requests_prealloc = generate_workload(100, 100.0, (50, 100), (5, 200), seed=42)
 
     paged = Scheduler(gpu, model)
     paged.run(requests)
     paged_peak = max(m.memory_utilisation for m in paged.history)
 
     prealloc = Scheduler(gpu, model, max_output_length=512, preallocate=True)
-    prealloc.run(requests_static)
+    prealloc.run(requests_prealloc)
     prealloc_peak = max(m.memory_utilisation for m in prealloc.history)
 
     assert prealloc_peak > paged_peak
