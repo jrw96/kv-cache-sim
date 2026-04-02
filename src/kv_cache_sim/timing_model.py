@@ -10,8 +10,8 @@ class TimingModel:
     """
 
     def __init__(self, gpu: GPUConfig, model: ModelConfig) -> None:
-        self.gpu = gpu
-        self.model = model
+        self.gpu: GPUConfig = gpu
+        self.model: ModelConfig = model
 
     def prefill_time(self, prompt_length: int, batch_size: int = 1) -> float:
         """Compute-bound prefill latency in seconds."""
