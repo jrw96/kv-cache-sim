@@ -53,3 +53,12 @@ LLAMA_70B = ModelConfig(
     head_dim=128,
     dtype_bytes=2,
 )
+
+
+@dataclass
+class SchedulerMetrics:
+    """Snapshot of scheduler state at a point in time."""
+
+    timestamp: float
+    batch_size: int
+    memory_utilisation: float
