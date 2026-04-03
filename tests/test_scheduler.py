@@ -182,11 +182,11 @@ def test_history_is_recorded(gpu: GPUConfig, model: ModelConfig) -> None:
 
 def test_history_is_recorded_static(gpu: GPUConfig, model: ModelConfig) -> None:
     """Scheduler with static batching records metrics at each step."""
-    scheduler = Scheduler(gpu, model, max_output_length=512, preallocate=True)
+    scheduler = Scheduler(gpu, model)
     requests = [
         Request(request_id=0, prompt_length=100, output_length=10, arrival_time=0.0)
     ]
-    scheduler.run(requests)
+    scheduler.run_static(requests)
     assert len(scheduler.history) > 0
     assert all(m.timestamp >= 0.0 for m in scheduler.history)
     assert all(0.0 <= m.memory_utilisation <= 1.0 for m in scheduler.history)
