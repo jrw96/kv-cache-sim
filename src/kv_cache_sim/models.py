@@ -54,6 +54,14 @@ LLAMA_70B = ModelConfig(
     dtype_bytes=2,
 )
 
+LLAMA_1B = ModelConfig(
+    num_params=1_000_000_000,
+    num_layers=80,
+    num_kv_heads=8,
+    head_dim=128,
+    dtype_bytes=2,
+)
+
 
 @dataclass
 class SchedulerMetrics:
@@ -62,3 +70,18 @@ class SchedulerMetrics:
     timestamp: float
     batch_size: int
     memory_utilisation: float
+
+
+@dataclass
+class SimulationSummary:
+    total_time: float
+    total_tokens: int
+    throughput: float
+    ttft_values: list[float]
+    avg_ttft: float
+    p50_ttft: float
+    p99_ttft: float
+    tpot_values: list[float]
+    avg_tpot: float
+    p50_tpot: float
+    p99_tpot: float
